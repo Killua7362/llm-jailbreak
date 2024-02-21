@@ -1,0 +1,9 @@
+FROM python:3.9-slim-buster
+WORKDIR /app
+COPY . .
+RUN apt-get -y update && apt-get install -y gcc
+RUN conda env create -f environment.yml
+SHELL ["conda", "run", "-n", "jailbreak", "/bin/bash", "-c"]
+EXPOSE 8000
+ENV FLASK_APP=models/gpt2/server.py
+ENTRYPOINT ["conda", "run", "-n", "jailbreak", "python3", "server.py"]
